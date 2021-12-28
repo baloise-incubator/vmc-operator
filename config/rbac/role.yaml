@@ -58,5 +58,17 @@ rules:
   - "kubevirt.io"
   resources:
   - "virtualmachines"
+- apiGroups:
+    - "route.openshift.io"
+  resources:
+    - "routes"
+  verbs:
+    - "*"
+- verbs:
+    - "*"
+  apiGroups:
+    - route.openshift.io
+  resources:
+    - routes/custom-host
 
 #+kubebuilder:scaffold:rules
