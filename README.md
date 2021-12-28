@@ -10,7 +10,14 @@ metadata:
   name: example
 spec:
   flavor: small
-  instances: 2
-  os: linux
-  diskSize: 20Gi
+    os: linux
+    platform: openshift
+    instances: 1
+    nameOverride:
+    diskSize: 20Gi
+    ports:
+      - name: https
+        port: 443
+        backendPort: 8443 # optional - defaults to port
+        protocol: TCP # optional - defaults to TCP
 ```

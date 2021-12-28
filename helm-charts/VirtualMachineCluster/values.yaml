@@ -1,5 +1,14 @@
 flavor: small
 os: linux
-instances: 2
-nameOverride:
+instances: 1
+platform: openshift
 diskSize: 20Gi
+# nameOverride:
+#ports:
+#  - name: https
+#    port: 443
+#    backendPort: 8443 # optional - defaults to port
+#    protocol: TCP # optional - defaults to TCP
+service:
+  annotations: {}
+  type: ClusterIP

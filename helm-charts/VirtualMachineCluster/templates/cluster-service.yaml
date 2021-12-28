@@ -1,0 +1,27 @@
+{{ if .Values.ports }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "vm.name" $ }}
+  labels:
+    cluster: {{ include "vm.name" $ }}
+    os: {{ $.Values.os }}
+{{- if gt (len .Values.service.annotations) 0 }}
+  annotations:
+{{- toYaml .Values.service.annotations | nindent 4 }}
+{{- end }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+  {{- range $key, $val := .Values.ports }}
+  {{- if $val.port}}
+  - name: {{ .name }}
+    port: {{ $val.port }}
+    protocol: {{ default "TCP" $val.protocol }}
+    targetPort: {{ default $val.port $val.targetPort }}
+  {{- end }}
+  {{- end }}
+  selector:
+    cluster: {{ include "vm.name" $ }}
+    os: {{ $.Values.os }}
+{{- end }}

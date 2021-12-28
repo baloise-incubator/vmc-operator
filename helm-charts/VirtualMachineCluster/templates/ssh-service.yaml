@@ -15,5 +15,8 @@ spec:
   internalTrafficPolicy: Cluster
   type: NodePort
   selector:
-    kubevirt.io/domain: {{ include "vm.name" $ }}-{{ $i }}
+    name: {{ include "vm.name" $ }}-{{ $i }}
+    cluster: {{ include "vm.name" $ }}
+    instance: "{{ $i }}"
+    os: {{ $.Values.os }}
 {{- end }}
