@@ -1,0 +1,19 @@
+{{- range $i := untilStep 0 (int .Values.instances) 1 }}
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ include "vm.name" $ }}-{{ $i }}-ssh
+spec:
+  externalTrafficPolicy: Cluster
+  ipFamilies:
+    - IPv4
+  ports:
+    - protocol: TCP
+      port: 22000
+      targetPort: 22
+  internalTrafficPolicy: Cluster
+  type: NodePort
+  selector:
+    kubevirt.io/domain: {{ include "vm.name" $ }}-{{ $i }}
+{{- end }}

@@ -1,0 +1,107 @@
+{{- range $i := untilStep 0 (int .Values.instances) 1 }}
+---
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  annotations:
+    name.os.template.kubevirt.io/centos8: CentOS 8 or higher
+    vm.kubevirt.io/validations: |
+      [
+        {
+          "name": "minimal-required-memory",
+          "path": "jsonpath::.spec.domain.resources.requests.memory",
+          "rule": "integer",
+          "message": "This VM requires more memory.",
+          "min": 1610612736
+        }
+      ]
+  name: {{ include "vm.name" $ }}-{{ $i }}
+  labels:
+    name: {{ include "vm.name" $ }}-{{ $i }}
+    cluster: {{ include "vm.name" $ }}
+    instance: "{{ $i }}"
+    os: {{ $.Values.os }}
+    flavor: {{ $.Values.flavor }}
+spec:
+  dataVolumeTemplates:
+    - apiVersion: cdi.kubevirt.io/v1beta1
+      kind: DataVolume
+      metadata:
+        name: {{ include "vm.name" $ }}-{{ $i }}
+      spec:
+        pvc:
+          accessModes:
+            - ReadWriteMany
+          resources:
+            requests:
+              storage: {{ $.Values.diskSize }}
+#          storageClassName: ceph-block
+          volumeMode: Block
+        source:
+          pvc:
+            name: centos8
+            namespace: openshift-virtualization-os-images
+  runStrategy: Always
+  template:
+    metadata:
+      annotations:
+        vm.kubevirt.io/flavor: {{ $.Values.flavor }}
+        vm.kubevirt.io/os: {{ $.Values.os }}
+        vm.kubevirt.io/workload: server
+      labels:
+        name: {{ include "vm.name" $ }}-{{ $i }}
+        cluster: {{ include "vm.name" $ }}
+        instance: "{{ $i }}"
+        os: {{ $.Values.os }}
+    spec:
+      accessCredentials:
+        - sshPublicKey:
+            propagationMethod:
+              configDrive: {}
+            source:
+              secret:
+                secretName: {{ include "vm.name" $ }}-authorizedsshkeys
+      domain:
+        devices:
+          disks:
+            - bootOrder: 1
+              disk:
+                bus: virtio
+              name: {{ include "vm.name" $ }}-{{ $i }}
+            - disk:
+                bus: virtio
+              name: cloudinitdisk
+          interfaces:
+            - masquerade: {}
+              name: default
+          networkInterfaceMultiqueue: true
+          rng: {}
+#        machine:
+#          type: pc-q35-rhel8.4.0
+{{- if eq "small" $.Values.flavor }}
+        cpu:
+          cores: 1
+          sockets: 1
+          threads: 1
+        resources:
+          requests:
+            memory: 2Gi
+{{ end }}
+      evictionStrategy: LiveMigrate
+      hostname: {{ include "vm.name" $ }}-{{ $i }}
+      networks:
+        - name: default
+          pod: {}
+      terminationGracePeriodSeconds: 180
+      volumes:
+        - dataVolume:
+            name: {{ include "vm.name" $ }}-{{ $i }}
+          name: {{ include "vm.name" $ }}-{{ $i }}
+        - cloudInitConfigDrive:
+            userData: |-
+              #cloud-config
+              user: centos
+              password: centos
+              chpasswd: { expire: False }
+          name: cloudinitdisk
+{{- end }}          

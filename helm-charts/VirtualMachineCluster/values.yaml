@@ -1,0 +1,5 @@
+flavor: small
+os: linux
+instances: 2
+nameOverride:
+diskSize: 20Gi

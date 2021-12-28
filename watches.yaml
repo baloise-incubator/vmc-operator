@@ -1,0 +1,6 @@
+# Use the 'create api' subcommand to add watches to this file.
+- group: apps.baloise.dev
+  version: v1alpha1
+  kind: VirtualMachineCluster
+  chart: helm-charts/VirtualMachineCluster
+#+kubebuilder:scaffold:watch
