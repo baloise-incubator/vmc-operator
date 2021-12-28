@@ -36,7 +36,7 @@ IMAGE_TAG_BASE ?= baloise.dev/baloise-linux-vm
 BUNDLE_IMG ?= $(IMAGE_TAG_BASE)-bundle:v$(VERSION)
 
 # Image URL to use all building/pushing image targets
-IMG ?= controller:latest
+IMG ?= niiku/vmc-operator:latest
 
 all: docker-build
 
