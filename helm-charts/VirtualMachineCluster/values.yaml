@@ -1,5 +1,5 @@
 flavor: small
-os: linux
+os: linux-centos8
 instances: 1
 platform: openshift
 diskSize: 20Gi
@@ -12,3 +12,7 @@ diskSize: 20Gi
 service:
   annotations: {}
   type: ClusterIP
+
+apache:
+  enabled: false
+  version: latest

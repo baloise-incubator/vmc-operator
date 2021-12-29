@@ -22,6 +22,9 @@ metadata:
     instance: "{{ $i }}"
     os: {{ $.Values.os }}
     flavor: {{ $.Values.flavor }}
+{{- if $.Values.apache.enabled }}
+    apache: "{{ $.Values.apache.version }}"
+{{- end }}
 spec:
   dataVolumeTemplates:
     - apiVersion: cdi.kubevirt.io/v1beta1
@@ -53,6 +56,10 @@ spec:
         cluster: {{ include "vm.name" $ }}
         instance: "{{ $i }}"
         os: {{ $.Values.os }}
+        flavor: {{ $.Values.flavor }}
+{{- if $.Values.apache.enabled }}
+        apache: "{{ $.Values.apache.version }}"
+{{- end }}
     spec:
       accessCredentials:
         - sshPublicKey:
@@ -100,8 +107,8 @@ spec:
         - cloudInitConfigDrive:
             userData: |-
               #cloud-config
-              user: centos
-              password: centos
+              user: config
+              password: config
               chpasswd: { expire: False }
           name: cloudinitdisk
 {{- end }}          

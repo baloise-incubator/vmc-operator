@@ -11,3 +11,5 @@ ports:
     protocol: TCP # optional - defaults to TCP
     ingress:
       host: example-vm.apps.baloise.dev
+apache:
+  enabled: true
