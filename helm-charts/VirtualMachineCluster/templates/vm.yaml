@@ -4,7 +4,7 @@ apiVersion: kubevirt.io/v1
 kind: VirtualMachine
 metadata:
   annotations:
-    name.os.template.kubevirt.io/centos8: CentOS 8 or higher
+    name.os.template.kubevirt.io/rhel: RHEL 8 or higher
     vm.kubevirt.io/validations: |
       [
         {
@@ -40,10 +40,7 @@ spec:
               storage: {{ $.Values.diskSize }}
 #          storageClassName: ceph-block
           volumeMode: Block
-        source:
-          pvc:
-            name: centos8
-            namespace: openshift-virtualization-os-images
+        source: {{ toYaml $.Values.source | nindent 10}}
   runStrategy: Always
   template:
     metadata:

@@ -1,5 +1,9 @@
 flavor: small
-os: linux-centos8
+os: rhel
+source:
+  pvc:
+    name: centos8-stream-downstream
+    namespace: kubevirt-data-volumes
 instances: 1
 platform: openshift
 diskSize: 20Gi
