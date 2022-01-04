@@ -1,0 +1,2 @@
+updateUrl="https://ci.baloise.dev/generic-webhook-trigger/invoke?token=kubevirt-update"
+curl -X POST $updateUrl -H "Content-Type: application/json" -H "X-KubeVirt-Event: Update" -d \'{"namespace":"vm-cluster-example","cluster":"example"}\'

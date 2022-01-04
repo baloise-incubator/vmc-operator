@@ -1,17 +1,16 @@
-nameOverride:
 flavor: small
 os: rhel
 source:
   pvc:
-  name: centos8-stream-downstream
-  namespace: kubevirt-data-volumes
+    name: centos8-stream-downstream
+    namespace: kubevirt-data-volumes
 instances: 1
 platform: openshift
 diskSize: 20Gi
 ports:
   - name: http
     port: 80
-    targetPort: 8080 # optional - defaults to port
+    targetPort: 80 # optional - defaults to port
     protocol: TCP # optional - defaults to TCP
     ingress:
       host: example-vm.apps.baloise.dev

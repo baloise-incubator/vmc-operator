@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{ include "vm.name" $ }}-update-webhook"
+  annotations:
+    "helm.sh/hook": post-upgrade
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    metadata:
+      name: "{{ include "vm.name" $ }}-update-webhook"
+      labels:
+        app: "{{ include "vm.name" $ }}-update-webhook"
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: run-webhook
+          env:
+            - name: WEBHOOK_URL
+              value: "https://ci.baloise.dev/generic-webhook-trigger/invoke?token=kubevirt-update"
+          image: "curlimages/curl:latest"
+          command: ["/bin/sh","-c"]
+          args: ["sleep 60; curl -X POST $WEBHOOK_URL -H 'Content-Type: application/json' -H 'X-KubeVirt-Event: Update' -d '{\"namespace\":\"{{ $.Release.Namespace}}\",\"cluster\":\"{{ include "vm.name" $ }}\"}'"]
