@@ -20,4 +20,4 @@ spec:
               value: "https://ci.baloise.dev/generic-webhook-trigger/invoke?token=kubevirt-update"
           image: "curlimages/curl:latest"
           command: ["/bin/sh","-c"]
-          args: ["sleep 180; curl -X POST $WEBHOOK_URL -H 'Content-Type: application/json' -H 'X-KubeVirt-Event: Update' -d '{\"namespace\":\"{{ $.Release.Namespace}}\",\"cluster\":\"{{ include "vm.name" $ }}\"}'"]
+          args: ["curl -X POST $WEBHOOK_URL -H 'Content-Type: application/json' -H 'X-KubeVirt-Event: Update' -d '{\"namespace\":\"{{ $.Release.Namespace}}\",\"cluster\":\"{{ include "vm.name" $ }}\"}'"]
