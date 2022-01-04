@@ -107,7 +107,7 @@ spec:
               user: config
               password: config
               chpasswd: { expire: False }
-              runcmd:
-              - 'curl -X POST "https://ci.baloise.dev/generic-webhook-trigger/invoke?token=kubevirt-update" -H "Content-Type: application/json" -H "X-KubeVirt-Event: FirstBoot" -d "{\"namespace\":\"{{ $.Release.Namespace }}\",\"cluster\":\"{{ include "vm.name" $ }}\"}"'
+#              runcmd:
+#              - 'curl -X POST "https://ci.baloise.dev/generic-webhook-trigger/invoke?token=kubevirt-update" -H "Content-Type: application/json" -H "X-KubeVirt-Event: FirstBoot" -d "{\"namespace\":\"{{ $.Release.Namespace }}\",\"cluster\":\"{{ include "vm.name" $ }}\"}"'
           name: cloudinitdisk
 {{- end }}
