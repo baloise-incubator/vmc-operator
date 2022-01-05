@@ -20,3 +20,7 @@ service:
 apache:
   enabled: false
   version: latest
+
+jboss:
+  enabled: false
+  version: latest

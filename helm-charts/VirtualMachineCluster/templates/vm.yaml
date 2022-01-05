@@ -25,6 +25,9 @@ metadata:
 {{- if $.Values.apache.enabled }}
     apache: "{{ $.Values.apache.version }}"
 {{- end }}
+{{- if $.Values.jboss.enabled }}
+    jboss: "{{ $.Values.jboss.version }}"
+{{- end }}
 spec:
   dataVolumeTemplates:
     - apiVersion: cdi.kubevirt.io/v1beta1
@@ -56,6 +59,9 @@ spec:
         flavor: {{ $.Values.flavor }}
 {{- if $.Values.apache.enabled }}
         apache: "{{ $.Values.apache.version }}"
+{{- end }}
+{{- if $.Values.jboss.enabled }}
+        jboss: "{{ $.Values.jboss.version }}"
 {{- end }}
     spec:
       accessCredentials:
